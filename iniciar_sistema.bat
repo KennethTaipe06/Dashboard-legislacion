@@ -1,6 +1,6 @@
 @echo off
 echo ================================================
-echo   Sistema de Análisis Meteorológico - Papallacta
+echo   Sistema de Predicciones Meteorológicas - Papallacta
 echo ================================================
 echo.
 
@@ -22,11 +22,19 @@ echo Dependencias básicas verificadas ✓
 echo.
 
 echo Verificando dependencias avanzadas (opcional)...
-python -c "import statsmodels" 2>nul
+python -c "import sklearn" 2>nul
 if errorlevel 1 (
-    echo ADVERTENCIA: statsmodels no está instalado.
-    echo Algunas funciones avanzadas de forecasting no estarán disponibles.
-    echo Para instalar: pip install statsmodels
+    echo ADVERTENCIA: scikit-learn no está instalado.
+    echo Algunas funciones avanzadas de ML no estarán disponibles.
+    echo Para instalar: pip install scikit-learn
+    echo.
+)
+
+python -c "import folium, streamlit_folium" 2>nul
+if errorlevel 1 (
+    echo ADVERTENCIA: Folium no está instalado.
+    echo Los mapas interactivos no estarán disponibles.
+    echo Para instalar: pip install folium streamlit-folium
     echo.
 )
 
@@ -41,8 +49,16 @@ if not exist "datasets_limpios" (
 echo Estructura de datos verificada ✓
 echo.
 
-echo Iniciando el sistema...
+echo Iniciando el Sistema de Predicciones...
 echo El sistema se abrirá en tu navegador en: http://localhost:8503
+echo.
+echo 🔮 SISTEMA DE FORECASTING Y MAPAS METEOROLÓGICOS 🔮
+echo - Predicciones de variables meteorológicas e hidrológicas
+echo - Múltiples algoritmos de forecasting disponibles
+echo - Validación automática con métricas de precisión
+echo - Intervalos de confianza estadísticos
+echo - Mapas interactivos con Folium
+echo - Visualización geoespacial de datos meteorológicos
 echo.
 echo Para detener el sistema, presiona Ctrl+C
 echo.

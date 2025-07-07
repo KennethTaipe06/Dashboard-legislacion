@@ -2,47 +2,38 @@ import streamlit as st
 
 # Configuración de la página
 st.set_page_config(
-    page_title="Sistema de Análisis Meteorológico - Papallacta",
-    page_icon="🌦️",
+    page_title="Sistema de Predicciones Meteorológicas - Papallacta",
+    page_icon="🔮",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
 def main():
     # Título principal
-    st.title("🌦️ Sistema de Análisis Meteorológico e Hidrológico")
-    st.markdown("### Estación Papallacta")
+    st.title("🔮 Sistema de Predicciones Meteorológicas e Hidrológicas")
+    st.markdown("### Estación Papallacta - Módulo de Forecasting")
     st.markdown("---")
     
     # Sidebar para navegación
     st.sidebar.title("🧭 Navegación")
     
-    # Opciones del menú
+    # Opciones del menú (forecasting, mapas e info)
     menu_options = {
-        "📊 Dashboard Principal": "dashboard",
         "🔮 Predicciones (Forecasting)": "forecasting",
+        "🗺️ Mapas Meteorológicos": "maps",
         "📚 Información del Sistema": "info"
     }
     
     selected_option = st.sidebar.selectbox(
         "Selecciona una opción:",
-        list(menu_options.keys())
+        list(menu_options.keys()),
+        index=0  # Por defecto, mostrar forecasting
     )
     
     # Ejecutar la opción seleccionada
     option_key = menu_options[selected_option]
     
-    if option_key == "dashboard":
-        # Importar y ejecutar dashboard principal
-        try:
-            import dashboard
-            # El dashboard se ejecutará automáticamente al importarlo
-        except ImportError as e:
-            st.error(f"Error al cargar el dashboard principal: {e}")
-        except Exception as e:
-            st.error(f"Error inesperado en el dashboard: {e}")
-    
-    elif option_key == "forecasting":
+    if option_key == "forecasting":
         # Importar y ejecutar módulo de forecasting
         try:
             from forecast_module import run_forecast_module
@@ -53,40 +44,54 @@ def main():
         except Exception as e:
             st.error(f"Error inesperado en forecasting: {e}")
     
+    elif option_key == "maps":
+        # Importar y ejecutar módulo de mapas
+        try:
+            from maps_module import show_maps_interface
+            show_maps_interface()
+        except ImportError as e:
+            st.error(f"Error al cargar el módulo de mapas: {e}")
+            st.info("Para usar mapas, instala: `pip install folium streamlit-folium`")
+        except Exception as e:
+            st.error(f"Error inesperado en mapas: {e}")
+    
     elif option_key == "info":
         show_system_info()
 
 def show_system_info():
     """Muestra información del sistema"""
-    st.header("📚 Información del Sistema")
+    st.header("📚 Información del Sistema de Predicciones")
     
     st.markdown("""
     ## 🌟 Descripción General
     
-    Este sistema proporciona herramientas completas para el análisis de datos meteorológicos e 
-    hidrológicos de la estación Papallacta, incluyendo:
-    
-    ### 📊 Dashboard Principal
-    - **Visualización interactiva** de series temporales
-    - **Análisis estadístico** completo con histogramas y box plots
-    - **Comparación temporal** entre diferentes períodos
-    - **Métricas en tiempo real** de las variables
-    - **Filtros personalizables** por fecha y variable
+    Este sistema proporciona herramientas especializadas para el **forecasting (predicción)** de datos 
+    meteorológicos e hidrológicos de la estación Papallacta.
     
     ### 🔮 Módulo de Predicciones
     - **Forecasting a corto y largo plazo** (hasta 2 años)
     - **Múltiples algoritmos** de predicción:
-      - Regresión Lineal
-      - Naive Estacional
-      - Promedio Móvil
-      - Suavizado Exponencial (Holt-Winters)
-      - ARIMA
-    - **Descomposición de series temporales**
+      - **Regresión Lineal**: Predicciones basadas en tendencias lineales
+      - **Naive Estacional**: Predicciones simples basadas en patrones estacionales
+      - **Promedio Móvil**: Predicciones suavizadas usando promedios móviles
+      - **Regresión Polinomial**: Predicciones con tendencias no lineales (opcional)
+      - **ML Estacional**: Machine Learning con componentes estacionales (opcional)
+    - **Validación 80/20**: Métricas reales de precisión usando datos de prueba
     - **Intervalos de confianza** para todas las predicciones
     - **Comparación de métodos** en un solo gráfico
     - **Exportación de resultados** en formato CSV
+    - **Métricas de evaluación**: MAE, RMSE, MAPE, R²
     
-    ## 📈 Variables Disponibles
+    ### 🗺️ Módulo de Mapas
+    - **Mapas Base**: Visualización geográfica con diferentes estilos
+    - **Mapas de Calor**: Representación de intensidad de variables
+    - **Mapas de Marcadores**: Ubicación y datos de estaciones meteorológicas
+    - **Mapas Temáticos**: Capas superpuestas (precipitación, temperatura, topografía)
+    - **Interactividad**: Zoom, clic, tooltips y popups informativos
+    - **Múltiples estilos**: OpenStreetMap, CartoDB, Stamen
+    - **Simulación de datos**: Demostración con datos meteorológicos simulados
+    
+    ## 📈 Variables Disponibles para Predicción
     
     ### Hidrológicas
     - **Caudal** (m³/s)
@@ -107,55 +112,57 @@ def show_system_info():
     - **Pandas**: Manipulación y análisis de datos
     - **Plotly**: Visualizaciones interactivas avanzadas
     - **NumPy**: Cálculos numéricos eficientes
-    - **SciPy**: Análisis estadístico
-    - **Statsmodels**: Modelos estadísticos y forecasting avanzado
-    - **Scikit-learn**: Machine learning (opcional)
+    - **Scikit-learn**: Machine learning para predicciones avanzadas (opcional)
     
-    ## 🚀 Características Avanzadas
+    ## 🚀 Características del Sistema
     
-    ### Dashboard
-    - **Caching inteligente** para mejor rendimiento
-    - **Responsive design** adaptable a diferentes pantallas
-    - **Tooltips interactivos** con información detallada
-    - **Zoom y pan** en todos los gráficos
-    - **Métricas comparativas** con períodos anteriores
-    
-    ### Forecasting
+    ### Predicciones Inteligentes
     - **Validación automática** de la calidad de los datos
-    - **Detección de outliers** y limpieza de datos
-    - **Análisis de estacionalidad** automático
-    - **Métricas de evaluación** (MAE, RMSE, MAPE)
-    - **Intervalos de confianza** calculados estadísticamente
+    - **División 80/20** para entrenamiento y validación
+    - **Detección automática** de patrones estacionales
+    - **Cálculo de métricas** de precisión en tiempo real
+    - **Intervalos de confianza** estadísticamente fundamentados
     
-    ## 📊 Casos de Uso
+    ### Interfaz de Usuario
+    - **Selección intuitiva** de variables y períodos
+    - **Controles personalizables** para cada método
+    - **Visualizaciones interactivas** con zoom y pan
+    - **Exportación fácil** de resultados
+    - **Métricas comparativas** entre métodos
     
-    1. **Monitoreo en tiempo real** de condiciones meteorológicas
-    2. **Análisis de tendencias** climáticas a largo plazo
-    3. **Predicción de eventos** meteorológicos extremos
-    4. **Planificación agrícola** basada en datos históricos
-    5. **Gestión de recursos hídricos**
-    6. **Investigación climatológica**
+    ## 📊 Casos de Uso Específicos
     
-    ## 🔧 Instalación y Configuración
+    1. **Predicción de caudales** para gestión de recursos hídricos
+    2. **Pronóstico de temperatura** para planificación agrícola
+    3. **Predicción de precipitación** para alertas tempranas
+    4. **Forecasting de variables múltiples** para análisis integral
+    5. **Validación de modelos** con métricas robustas
+    6. **Comparación de algoritmos** para selección óptima
+    
+    ## 🔧 Instalación y Uso
     
     ```bash
-    # Instalar dependencias
-    pip install -r requirements.txt
+    # Instalar dependencias básicas
+    pip install streamlit pandas plotly numpy
+    
+    # Instalar dependencias opcionales para ML
+    pip install scikit-learn
     
     # Ejecutar el sistema
     streamlit run main.py
     ```
     
-    ## 📞 Soporte Técnico
+    ## � Métricas de Evaluación
     
-    Para problemas técnicos:
-    1. Verifica que todos los archivos CSV estén en `datasets_limpios/`
-    2. Asegúrate de que las dependencias estén instaladas
-    3. Revisa los logs en la consola para errores específicos
+    - **MAE (Mean Absolute Error)**: Error absoluto promedio
+    - **RMSE (Root Mean Square Error)**: Raíz del error cuadrático medio
+    - **MAPE (Mean Absolute Percentage Error)**: Error porcentual absoluto medio
+    - **R² (Coeficiente de Determinación)**: Calidad del ajuste del modelo
+    - **Precisión (%)**: Porcentaje de precisión general del modelo
     
     ---
     
-    **Desarrollado para el análisis avanzado de datos meteorológicos e hidrológicos** 🌦️📊
+    **Sistema especializado en predicciones meteorológicas e hidrológicas** 🔮📊
     """)
     
     # Mostrar estadísticas del sistema

@@ -13,10 +13,16 @@ try:
     from statsmodels.tsa.holtwinters import ExponentialSmoothing
     from statsmodels.tsa.arima.model import ARIMA
     from statsmodels.tsa.seasonal import seasonal_decompose
-    from scipy import stats
     STATSMODELS_AVAILABLE = True
 except ImportError:
     STATSMODELS_AVAILABLE = False
+
+# Importar scipy.stats por separado (necesario para regresión lineal)
+try:
+    from scipy import stats
+    SCIPY_AVAILABLE = True
+except ImportError:
+    SCIPY_AVAILABLE = False
 
 try:
     from sklearn.linear_model import LinearRegression
@@ -28,7 +34,7 @@ except ImportError:
 
 def check_forecasting_dependencies():
     """Verifica si las dependencias de forecasting están disponibles"""
-    return STATSMODELS_AVAILABLE or SKLEARN_AVAILABLE
+    return STATSMODELS_AVAILABLE or SKLEARN_AVAILABLE or SCIPY_AVAILABLE
 
 def prepare_forecast_data(df, column='valor'):
     """Prepara los datos para forecasting"""
@@ -54,6 +60,11 @@ def prepare_forecast_data(df, column='valor'):
 
 def simple_linear_forecast(series, periods=365):
     """Forecast simple usando regresión lineal"""
+    # Verificar que scipy.stats esté disponible
+    if not SCIPY_AVAILABLE:
+        st.error("scipy.stats no está disponible. Instala scipy: pip install scipy")
+        return None, None, None
+    
     # Crear variable de tiempo
     n = len(series)
     x = np.arange(n)
@@ -305,7 +316,7 @@ def moving_average_forecast(series, periods=365, window=30):
     
     # Calcular tendencia de los últimos valores de entrenamiento
     recent_ma = ma_train.tail(90)  # últimos 3 meses del entrenamiento
-    if len(recent_ma) > 1:
+    if len(recent_ma) > 1 and SCIPY_AVAILABLE:
         x = np.arange(len(recent_ma))
         slope, intercept, _, _, _ = stats.linregress(x, recent_ma.dropna().values)
         trend = slope

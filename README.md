@@ -1,41 +1,28 @@
-# Sistema de Análisis Meteorológico e Hidrológico - Papallacta
+# Sistema de Predicciones Meteorológicas e Hidrológicas - Papallacta
 
-Este sistema integral permite visualizar, analizar y predecir datos meteorológicos e hidrológicos de la estación Papallacta de manera intuitiva y completa.
+Este sistema especializado permite realizar predicciones (forecasting) de datos meteorológicos e hidrológicos de la estación Papallacta con múltiples algoritmos y validación automática.
 
 ## 🌟 Características Principales
 
-### 📊 Dashboard Principal
-- **Visualización de Series Temporales**: Gráficos de líneas interactivos con valores máximos y mínimos absolutos
-- **Análisis Estadístico**: Histogramas, box plots y estadísticas descriptivas
-- **Análisis de Tendencias**: Regresión lineal y métricas de ajuste
-- **Comparación Anual y Mensual**: Visualización de patrones estacionales
-- **Comparación Múltiple**: Análisis simultáneo de múltiples variables
-- **Filtros Interactivos**: Selección de rangos de fechas y variables
-- **Métricas en Tiempo Real**: KPIs principales actualizados dinámicamente
-
-### 🔮 Módulo de Predicciones (Forecasting)
+### � Módulo de Predicciones (Forecasting)
 - **Predicciones a largo plazo**: Hasta 2 años de forecast
+- **Validación 80/20**: División automática para entrenamiento y prueba
 - **Múltiples algoritmos**:
-  - Regresión Lineal Simple
-  - Naive Estacional (repite patrones del año anterior)
-  - Promedio Móvil
-  - **Machine Learning con scikit-learn**:
+  - **Regresión Lineal Simple**: Predicciones basadas en tendencias lineales
+  - **Naive Estacional**: Repite patrones del año anterior
+  - **Promedio Móvil**: Suavizado con ventanas móviles
+  - **Machine Learning con scikit-learn** (opcional):
     - Regresión Lineal Avanzada (con características cíclicas)
     - Regresión Polinomial (grados 2-5)
     - Forecasting Estacional ML
-  - **Métodos Estadísticos Avanzados** (con statsmodels):
-    - Suavizado Exponencial
-    - ARIMA
-  - Promedio Móvil con tendencia
-  - Suavizado Exponencial (Holt-Winters)
-  - Modelos ARIMA
-- **Descomposición de series temporales**: Análisis de tendencia, estacionalidad y residuos
-- **Intervalos de confianza**: Para todas las predicciones
+- **Métricas de precisión reales**: Evaluación en datos de prueba no vistos
+- **Intervalos de confianza**: Cálculos estadísticos para todas las predicciones
 - **Comparación de métodos**: Visualización simultánea de diferentes algoritmos
-- **Métricas de evaluación**: MAE, RMSE, MAPE
+- **Métricas de evaluación completas**: MAE, RMSE, MAPE, R², Precisión (%)
 - **Exportación de resultados**: Descarga en formato CSV
+- **Interfaz intuitiva**: Controles fáciles de usar para cada método
 
-## 📊 Variables Disponibles
+## 📊 Variables Disponibles para Predicción
 
 - **Hidrológicas:**
   - Caudal (m³/s)
@@ -79,80 +66,77 @@ install.bat
 
 #### Opción 1: Script de Inicio Rápido (Windows)
 ```bash
-run.bat
+iniciar_sistema.bat
 ```
 
 #### Opción 2: Ejecución Manual
-1. **Sistema completo:**
-   ```bash
-   streamlit run main.py
-   ```
+```bash
+streamlit run main.py
+```
 
-2. **Módulos individuales:**
-   ```bash
-   # Solo dashboard principal
-   streamlit run dashboard.py
-   
-   # Solo módulo de forecasting
-   streamlit run forecast_module.py
-   ```
-
-4. **Abrir en el navegador:**
-   El sistema se abrirá automáticamente en `http://localhost:8501`
+3. **Abrir en el navegador:**
+   El sistema se abrirá automáticamente en `http://localhost:8503`
 
 ## 🎯 Navegación del Sistema
 
 ### Menú Principal
-El archivo `main.py` actúa como hub central con tres opciones:
+El archivo `main.py` actúa como hub central con dos opciones:
 
-1. **📊 Dashboard Principal**
-   - Visualización y análisis de datos históricos
-   - Todos los tipos de gráficos y análisis estadísticos
-
-2. **🔮 Predicciones (Forecasting)**
-   - Módulo especializado en predicciones
+1. **� Predicciones (Forecasting)** (Página principal)
+   - Módulo especializado en predicciones meteorológicas e hidrológicas
    - Múltiples algoritmos de forecasting
-   - Descomposición de series temporales
-
-3. **📚 Información del Sistema**
-   - Documentación completa
+   - Validación automática y métricas de precisión
+2. **📚 Información del Sistema**
+   - Documentación completa del sistema de predicciones
    - Estadísticas del sistema
-   - Guía de uso
+   - Guía de uso y métricas
 
-## 🎯 Cómo Usar el Dashboard
+## 🔮 Cómo Usar el Sistema de Predicciones
 
 ### Panel de Control (Sidebar)
-- **Seleccionar Variable**: Elige la variable meteorológica o hidrológica a visualizar
-- **Filtro de Fechas**: Define el rango temporal de análisis
-- **Tipo de Gráfico**: Selecciona entre diferentes tipos de visualización
+- **Seleccionar Variable**: Elige la variable meteorológica o hidrológica para predecir
+- **Período de Predicción**: Define cuántos días hacia el futuro predecir (30-730 días)
+- **Métodos de Forecasting**: Selecciona qué algoritmos usar
+- **Parámetros Avanzados**: Personaliza configuraciones específicas de cada método
 
-### Tipos de Visualización
+### Métodos de Forecasting Disponibles
 
-1. **Serie Temporal**
-   - Visualización cronológica de los datos
-   - Incluye valores máximos y mínimos absolutos
-   - Interactividad con zoom y tooltips
+1. **Regresión Lineal**
+   - Predicciones basadas en tendencias lineales simples
+   - Rápido y eficiente para tendencias claras
+   - Incluye intervalos de confianza
 
-2. **Histograma**
-   - Distribución de frecuencias de los valores
-   - Estadísticas descriptivas completas
-   - Análisis de percentiles
+2. **Naive Estacional**
+   - Repite los patrones del año anterior
+   - Ideal para datos con fuerte estacionalidad
+   - Simple pero efectivo
 
-3. **Box Plot**
-   - Distribución por años y meses
-   - Identificación de outliers
-   - Análisis de variabilidad estacional
+3. **Promedio Móvil**
+   - Suavizado usando ventanas móviles
+   - Configurable: tamaño de ventana
+   - Bueno para reducir ruido
 
-4. **Estadísticas**
-   - Promedio mensual
-   - Variación anual
-   - Tendencia (media móvil 30 días)
-   - Completitud de datos
+4. **Machine Learning (Opcional)**
+   - **Regresión Lineal ML**: Con características cíclicas estacionales
+   - **Regresión Polinomial**: Tendencias no lineales (grados 2-5)
+   - **Estacional ML**: Combina ML con patrones estacionales
+   - Requiere: `pip install scikit-learn`
 
-5. **Análisis de Tendencia**
-   - Regresión lineal
-   - Coeficiente de determinación (R²)
-   - Dirección de la tendencia
+### Métricas de Evaluación
+
+- **MAE (Mean Absolute Error)**: Error absoluto promedio
+- **RMSE (Root Mean Square Error)**: Raíz del error cuadrático medio
+- **MAPE (Mean Absolute Percentage Error)**: Error porcentual promedio
+- **R² (Coeficiente de Determinación)**: Calidad del ajuste (0-1)
+- **Precisión (%)**: Porcentaje de precisión general
+
+### Validación 80/20
+
+El sistema automáticamente:
+1. **Divide los datos**: 80% para entrenamiento, 20% para prueba
+2. **Entrena modelos**: Solo usa datos de entrenamiento
+3. **Evalúa precisión**: Prueba en datos no vistos
+4. **Calcula métricas**: Métricas reales de precisión
 
 ### Módulo de Forecasting
 
